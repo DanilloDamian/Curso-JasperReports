@@ -19,7 +19,7 @@ public class JasperService {
         this.params.put(key, value);
     }
 
-    public void acrirJasperViewer(String jrxml, Connection connection){
+    public void abrirJasperViewer(String jrxml, Connection connection){
         try {
             JasperReport report = compilarJrxml(jrxml);
             JasperPrint print = JasperFillManager.fillReport(report,this.params,connection);
@@ -38,6 +38,17 @@ public class JasperService {
             JasperExportManager.exportReportToPdfStream(print,out);
 
         } catch (JRException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void acrirPontoJasper(String jasperFile, Connection connection){
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(jasperFile);
+            JasperPrint print = JasperFillManager.fillReport(is,this.params,connection);
+            JasperViewer viewer = new JasperViewer(print);
+            viewer.setVisible(true);
+        } catch (JRException e) {
             throw new RuntimeException(e);
         }
     }
