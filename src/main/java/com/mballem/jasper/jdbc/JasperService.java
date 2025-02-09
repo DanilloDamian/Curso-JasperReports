@@ -3,7 +3,10 @@ package com.mballem.jasper.jdbc;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +26,18 @@ public class JasperService {
             JasperViewer viewer = new JasperViewer(print);
             viewer.setVisible(true);
         } catch (JRException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void exportaParaPDF(String jrxml, Connection connection, String saida){
+        try {
+            OutputStream out = new FileOutputStream(saida);
+            JasperReport report = compilarJrxml(jrxml);
+            JasperPrint print = JasperFillManager.fillReport(report,this.params,connection);
+            JasperExportManager.exportReportToPdfStream(print,out);
+
+        } catch (JRException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
