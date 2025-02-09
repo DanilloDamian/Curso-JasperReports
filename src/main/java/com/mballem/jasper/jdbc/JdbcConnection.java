@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 public class JdbcConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/jaspercurso?serverTimezone=America/Sao_Paulo";
-    private static final String USER = "seu usuario";
-    private static final String PASS = "sua senha";
+    private static final String USER = "root";
+    private static final String PASS = "root";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     public static Connection connection() {
